@@ -11,7 +11,7 @@
  *          type: string
  */
 export interface Branch {
-    id: string;
+    id: number;
     name: string;
     address: string;
 }
