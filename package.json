@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon src/server.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "generate-docs": "ts-node script/generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output api-docs/index.html"
   },
   "keywords": [],
   "author": "",

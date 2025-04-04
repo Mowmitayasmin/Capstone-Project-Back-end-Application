@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorClass, ServiceError } from "../errors/errors";
-import { HTTP_STATUS } from "constant/httpConstants";
+import { HTTP_STATUS } from "../../../../constant/httpConstants";
 
 const customErrorHandler = (
     error: Error | null,
