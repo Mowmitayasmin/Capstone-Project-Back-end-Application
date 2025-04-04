@@ -130,7 +130,7 @@ describe("User Controller", () => {
        mockReq.params = { id: userId };
        (userService.deleteUser as jest.Mock).mockResolvedValue(true);
  
-   const user = await userController.remove(mockReq as Request, mockRes as Response, mockNext);
+    await userController.remove(mockReq as Request, mockRes as Response, mockNext);
    
        expect(userService.deleteUser).toHaveBeenCalledWith(userId);
        expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);

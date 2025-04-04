@@ -100,7 +100,7 @@ export const update = async (
             req.body
         );
 
-        res.status(200).json(
+        res.status(HTTP_STATUS.OK).json(
             {
                 message: 'Updated successfully',
                 item: updated
@@ -118,8 +118,8 @@ export const remove = async (
 ): Promise<void> => {
     try {
         await userService.deleteUser(req.params.id);
-        res.status(200).json({
-            message: 'Loan deleted successfully',
+        res.status(HTTP_STATUS.OK).json({
+            message: 'User deleted successfully',
         });
     } catch (error) {
         next(error);

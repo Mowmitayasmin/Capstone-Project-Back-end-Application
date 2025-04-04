@@ -3,7 +3,7 @@ import * as branchController from "../src/api/v1/controllers/branch";
 import * as branchService from "../src/api/v1/services/branch";
 import { HTTP_STATUS } from "../constant/httpConstants";
 
-jest.mock("../src/api/v1/services/branches.ts");
+jest.mock("../src/api/v1/services/branch.ts");
 
 describe("Branch Controller", () => {
   let mockReq: Partial<Request>;
