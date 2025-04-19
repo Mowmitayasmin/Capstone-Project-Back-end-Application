@@ -8,6 +8,30 @@ import { UserRecord } from "firebase-admin/auth";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { WhereFilterOp } from "firebase-admin/firestore";
 
+/**
+ * Retrieves a list of loans with optional filtering parameters.
+ *
+ * This controller method supports dynamic filtering by priceMin, priceMax, user_id, 
+ * branch_id, is_approved, and is_reviewed from the query string. 
+ * It constructs a set of filters accordingly and passes them to the loan service.
+ * The result is returned as a JSON response with status 200. 
+ * Any errors during the process are forwarded to the error-handling middleware.
+ *
+ * @param req - Express request object containing optional query parameters:
+ *  - priceMin (number): Minimum price filter (inclusive).
+ *  - priceMax (number): Maximum price filter (inclusive).
+ *  - user_id (string): Filter by user ID.
+ *  - branch_id (string): Filter by branch ID.
+ *  - is_approved (boolean): Filter by approval status.
+ *  - is_reviewed (boolean): Filter by review status.
+ *  - limit (number): Limit the number of returned items.
+ * 
+ * @param res - Express response object used to return the filtered loans.
+ * @param next - Express next function for handling and forwarding errors.
+ *
+ * @returns A JSON array of loan items matching the filter criteria.
+ */
+
 export const getAll = async (
   req: Request,
   res: Response,
@@ -87,6 +111,24 @@ export const getAll = async (
   }
 };
 
+/**
+ * Creates a new loan application.
+ *
+ * This controller method performs the following:
+ * - Extracts and verifies the Firebase auth token from the Authorization header.
+ * - Retrieves the authenticated user's details.
+ * - Attaches default values to the loan request (is_reviewed, is_approved, user_id, and branch_id from custom claims).
+ * - Creates a new loan via the loanService.
+ * - Sends an email notification to a predefined email address for review purposes.
+ * - Returns a success response with the newly created loan data.
+ *
+ * @param req - Express request object containing the loan details in the body and auth token in the headers.
+ * @param res - Express response object used to return the created loan and a success message.
+ * @param next - Express next function used to forward errors to the error-handling middleware.
+ *
+ * @returns A JSON object with a message and the created loan item on success.
+ */
+
 export const create = async (
   req: Request,
   res: Response,
@@ -130,6 +172,22 @@ export const create = async (
   }
 };
 
+/**
+ * Updates an existing loan entry.
+ *
+ * This controller method:
+ * - Accepts a loan ID as a route parameter.
+ * - Accepts updated loan data from the request body.
+ * - Calls the loanService.updateLoan method to update the loan record.
+ * - Returns a success response with the updated loan data.
+ *
+ * @param req - Express request object containing the loan ID in params and update data in body.
+ * @param res - Express response object used to return a success message and the updated loan.
+ * @param next - Express next function used to forward any errors to the error-handling middleware.
+ *
+ * @returns A JSON object with a message and the updated loan object.
+ */
+
 export const update = async (
   req: Request,
   res: Response,
@@ -146,6 +204,19 @@ export const update = async (
     next(error);
   }
 };
+
+/**
+ * Handles the review process of a loan application.
+ * This function fetches the loan by its ID, updates its review to true, 
+ * sends an email notification to the user, and returns the updated loan details.
+ *
+ * @param req - The request object containing the loan ID as a URL parameter.
+ * @param res - The response object used to send the result of the review process.
+ * @param next - The next function in the middleware chain to handle errors.
+ *
+ * @returns {Promise<void>} - A promise that resolves to void.
+ * @throws {Error} - Throws an error if there is an issue fetching, updating, or emailing.
+ */
 
 export const review = async (
   req: Request,
@@ -174,6 +245,20 @@ export const review = async (
     next(error);
   }
 };
+
+/**
+ * Handles the approval process of a loan application.
+ * This function fetches the loan by its ID, updates its approve to true, 
+ * sends an email notification to the user, and returns the updated loan details.
+ *
+ * @param req - The request object containing the loan ID as a URL parameter.
+ * @param res - The response object used to send the result of the approval process.
+ * @param next - The next function in the middleware chain to handle errors.
+ *
+ * @returns {Promise<void>} - A promise that resolves to void.
+ * @throws {Error} - Throws an error if there is an issue fetching, updating, or emailing.
+ */
+
 export const approve = async (
   req: Request,
   res: Response,
@@ -203,6 +288,20 @@ export const approve = async (
     next(error);
   }
 };
+
+/**
+ * Retrieves the details of a specific loan based on its ID.
+ * This function fetches the loan by its ID, and returns the loan details if found.
+ * If the loan ID is not provided or an error occurs, it handles the failure appropriately.
+ *
+ * @param req - The request object containing the loan ID as a URL parameter.
+ * @param res - The response object used to send the loan details or error message.
+ * @param next - The next function in the middleware chain to handle errors.
+ *
+ * @returns {Promise<void>} - A promise that resolves to void.
+ * @throws {Error} - Throws an error if there is an issue fetching the loan details.
+ */
+
 export const loanDetails = async (
   req: Request,
   res: Response,
@@ -228,6 +327,19 @@ export const loanDetails = async (
     next(error);
   }
 };
+
+/**
+ * Handles the deletion of a loan application.
+ * This function deletes a loan by its ID and returns a success message upon completion.
+ * If an error occurs during the deletion process, it passes the error to the next middleware.
+ *
+ * @param req - The request object containing the loan ID as a URL parameter.
+ * @param res - The response object used to send the result of the deletion process.
+ * @param next - The next function in the middleware chain to handle errors.
+ *
+ * @returns {Promise<void>} - A promise that resolves to void.
+ * @throws {Error} - Throws an error if there is an issue deleting the loan.
+ */
 
 export const remove = async (
   req: Request,

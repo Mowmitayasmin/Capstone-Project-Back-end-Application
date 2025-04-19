@@ -8,6 +8,8 @@ import {
 } from "firebase-admin/app";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
 import { getAuth, Auth } from "firebase-admin/auth";
+import dotenv from "dotenv";
+dotenv.config();
 
 const getFirebaseConfig = (): AppOptions => {
   const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY } =

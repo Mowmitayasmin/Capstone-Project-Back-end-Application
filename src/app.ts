@@ -1,9 +1,9 @@
 import express, { Express } from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
+dotenv.config();
 import morgan from "morgan";
 import cors from "cors";
-dotenv.config();
 import swaggerConfig from "../config/swagger";
 import customErrorHandler from "./api/v1/middleware/customErrorHandler";
 import loanRouter from "./api/v1/routes/loan";

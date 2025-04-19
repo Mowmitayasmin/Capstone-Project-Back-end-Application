@@ -7,6 +7,19 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { sendEmail } from "./mailer";
 
+/**
+ * Retrieves a list of all users.
+ * This function fetches the list of users using the auth.listUsers() method and returns the result.
+ * If an error occurs during the process, it is passed to the next middleware for handling.
+ *
+ * @param req - The request object, which may contain query parameters for filtering or pagination (if applicable).
+ * @param res - The response object used to send the list of users or an error message.
+ * @param next - The next function in the middleware chain to handle any errors.
+ *
+ * @returns {Promise<void>} - A promise that resolves to void, as the response is sent directly.
+ * @throws {Error} - Throws an error if there is an issue fetching the user list.
+ */
+
 export const getAll = async (
   req: Request,
   res: Response,
@@ -20,6 +33,18 @@ export const getAll = async (
     next(error);
   }
 };
+
+/**
+ * Creates a new user in Firebase Authentication.
+ * Uses the request body to create a new user and sends a confirmation email on success.
+ *
+ * @param req - Express request object containing user data in the body.
+ * @param res - Express response object used to return success message and created user info.
+ * @param next - Express next middleware function for error handling.
+ *
+ * @returns {Promise<void>} - Resolves when the user is created and email is sent.
+ * @throws {Error} - If user creation or email sending fails.
+ */
 
 export const create = async (
   req: Request,
@@ -46,6 +71,19 @@ export const create = async (
     next(error);
   }
 };
+
+/**
+ * Logs in a user using Firebase client authentication.
+ * Uses the email and password from the request body and returns a valid ID token on success.
+ *
+ * @param req - Express request object containing `email` and `password` in the body.
+ * @param res - Express response object used to return the Firebase ID token.
+ * @param next - Express next middleware function (not used in this function).
+ *
+ * @returns {Promise<void>} - Resolves with the ID token or error message.
+ * @throws {Error} - If sign-in fails or user credentials are invalid.
+ */
+
 export const login = async (
   req: Request,
   res: Response,
@@ -70,6 +108,19 @@ export const login = async (
       .json({ error: "Failed to sign in" });
   }
 };
+
+/**
+ * Retrieves detailed information about a specific user by user ID.
+ * Responds with the user’s data if found, otherwise handles errors.
+ *
+ * @param req - Express request object with `id` as a route parameter.
+ * @param res - Express response object used to return user details.
+ * @param next - Express next middleware function for error handling.
+ *
+ * @returns {Promise<void>} - Resolves with user details or error message.
+ * @throws {Error} - If the user is not found or Firebase retrieval fails.
+ */
+
 export const userDetails = async (
   req: Request,
   res: Response,
@@ -95,6 +146,18 @@ export const userDetails = async (
   }
 };
 
+/**
+ * Updates user information in Firebase Authentication based on user ID.
+ * Accepts new user data in the request body.
+ *
+ * @param req - Express request object with `id` param and updated user data in the body.
+ * @param res - Express response object used to return success message and updated data.
+ * @param next - Express next middleware function for error handling.
+ *
+ * @returns {Promise<void>} - Resolves when the user is updated successfully.
+ * @throws {Error} - If updating the user fails.
+ */
+
 export const update = async (
   req: Request,
   res: Response,
@@ -111,6 +174,17 @@ export const update = async (
     next(error);
   }
 };
+
+/**
+ * Delete a user from Firebase Authentication based on user ID.
+ *
+ * @param req - Express request object with `id` param indicating which user to delete.
+ * @param res - Express response object used to return success confirmation.
+ * @param next - Express next middleware function for error handling.
+ *
+ * @returns {Promise<void>} - Resolves when the user is deleted successfully.
+ * @throws {Error} - If user deletion fails.
+ */
 
 export const remove = async (
   req: Request,
