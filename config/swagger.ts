@@ -3,7 +3,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
                                                                                            
 const serverUrl =
-    process.env.SWAGGER_SERVER_URL || "http://localhost:9000/api/v1";
+    process.env.SWAGGER_SERVER_URL || "http://localhost:8000/api/v1";
 const swaggerOptions: swaggerJsDoc.Options = {
     definition: {
         openapi: "3.0.0",

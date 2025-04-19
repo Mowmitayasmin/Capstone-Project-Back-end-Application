@@ -1,8 +1,7 @@
 import { initializeApp, cert, ServiceAccount,AppOptions, App , getApps} from "firebase-admin/app";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
 import { getAuth, Auth } from "firebase-admin/auth";
-import * as dotenv from 'dotenv';
-dotenv.config();
+
 
 const getFirebaseConfig = (): AppOptions => {
    

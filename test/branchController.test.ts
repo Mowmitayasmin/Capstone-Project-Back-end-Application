@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import * as branchController from "../src/api/v1/controllers/branch";
-import * as branchService from "../src/api/v1/services/branch";
-import { HTTP_STATUS } from "../constant/httpConstants";
+import * as branchService from "../src/api/v1/services/branches";
+import { HTTP_STATUS } from "../src/constants/httpConstants";
 
-jest.mock("../src/api/v1/services/branch.ts");
+jest.mock("../src/api/v1/services/branches.ts");
 
 describe("Branch Controller", () => {
   let mockReq: Partial<Request>;
@@ -71,6 +71,7 @@ describe("Branch Controller", () => {
       expect(mockRes.status).not.toHaveBeenCalled();
       expect(mockRes.json).not.toHaveBeenCalled();
     });
+
 
   });
   describe("getAll", () => {

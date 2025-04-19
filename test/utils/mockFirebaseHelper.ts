@@ -1,5 +1,6 @@
 import { firestore } from "firebase-admin";
 
+
 export type MockFirestoreData = {
     [key: string]: unknown;
 };
@@ -52,7 +53,6 @@ export type PartialMockFirestoreTransaction = Partial<{
  * Usage example:
  * const mockCollection = mockFirestoreCollection({ name: "John", age: 30 }, "user123");
  */
-
 export const mockFirestoreCollection = (
     docData: MockFirestoreData,
     id: string = "mockDocId"
@@ -81,7 +81,6 @@ export const mockFirestoreCollection = (
  * // In your test:
  * mockFirestoreTransaction.get.mockResolvedValue(someMockDocumentData);
  */
-
 export const mockFirestoreTransaction: jest.Mocked<firestore.Transaction> = {
     get: jest.fn(),
     getAll: jest.fn(),
@@ -104,7 +103,6 @@ export const mockFirestoreTransaction: jest.Mocked<firestore.Transaction> = {
  *     { id: "doc2", name: "Jane" }
  * ]);
  */
-
 export const mockQuerySnapshot = (
     docs: MockFirestoreData[]
 ): MockQuerySnapshot => ({
@@ -137,7 +135,6 @@ export const mockQuerySnapshot = (
  *     { id: "doc2", name: "Jane" }
  * ]);
  */
-
 export const mockFirestoreQuery = (
     docs: MockFirestoreData[]
 ): MockFirestoreQuery => ({

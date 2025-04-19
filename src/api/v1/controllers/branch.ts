@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import { HTTP_STATUS } from '../../../../constant/httpConstants';
-import * as branchService from "../services/branch";
+import { HTTP_STATUS } from '../../../constants/httpConstants';
+import * as branchService from "../services/branches";
 import { Branch } from '../models/branch';
+
+
+
+
 
 export const getAll = async (
     req: Request,
@@ -18,6 +22,8 @@ export const getAll = async (
         next(error);
     }
 };
+
+
 
 export const create = async (
     req: Request,
@@ -91,6 +97,9 @@ export const update = async (
         next(error);
     }
 };
+
+
+
 
 export const remove = async (
     req: Request,

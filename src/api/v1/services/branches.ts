@@ -1,3 +1,4 @@
+
 import { Branch } from "../models/branch";
 import {
     getItems,
@@ -20,16 +21,18 @@ export const getAllBranches = async (): Promise<Branch[]> => {
     });
 };
 
+
+
 export const createBranch = async (item: Partial<Branch>): Promise<Branch> => {
-    const id: string = await createItems(COLLECTION, item);
+    const id = await createItems(COLLECTION, item);
     return { id, ...item } as Branch;
+    
 };
 
 export const getBranchById = async (id: number): Promise<Branch | null> => {
     const branch = branches.find(branch => branch.id === id);
     return branch || null;
 };
-
 export const updateBranch = async (
     id: string,
     item: Partial<Branch>
@@ -37,6 +40,7 @@ export const updateBranch = async (
     await updateItems(COLLECTION, id, item);
     return { id, ...item } as Branch;
 };
+
 
 export const deleteBranch = async (id: string): Promise<void> => {
     await deleteItems(COLLECTION, id);

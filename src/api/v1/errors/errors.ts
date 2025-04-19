@@ -34,6 +34,7 @@ class AuthenticationError extends ErrorClass {
 
 class AuthorizationError extends ErrorClass {
 
+
     constructor(
         message: string,
         code: string = "AUTHORIZATION",
@@ -80,5 +81,7 @@ class ServiceError extends Error {
         Object.setPrototypeOf(this, ServiceError.prototype);
     }
 }
+
+
 
 export { AppError, ValidationError, NotFoundError, RepositoryError, ServiceError, ErrorClass, AuthenticationError, AuthorizationError };

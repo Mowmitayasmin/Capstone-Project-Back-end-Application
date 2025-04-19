@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { ObjectSchema } from "joi";
+
 import { MiddlewareFunction, RequestData } from "../types/expressTypes";
-import { HTTP_STATUS } from "../../../../constant/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 /**
  * Validates data against a Joi schema and throws an error if validation fails.

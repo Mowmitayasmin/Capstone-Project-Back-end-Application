@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as userController from "../src/api/v1/controllers/user";
 import * as userService from "../src/api/v1/services/user";
-import { HTTP_STATUS } from "../constant/httpConstants";
+import { HTTP_STATUS } from "../src/constants/httpConstants";
 
 jest.mock("../src/api/v1/services/user.ts");
 
@@ -49,6 +49,8 @@ describe("User Controller", () => {
       });
     });
 
+   
+
     it("should handle service errors", async () => {
       const error = new Error("Database error");
       (userService.createUser as jest.Mock).mockRejectedValue(error);
@@ -59,7 +61,6 @@ describe("User Controller", () => {
       expect(mockNext).toHaveBeenCalledWith(error);
     });
   });
-
   describe("update", () => {
      it("should update user successfully", async () => {
        const userId = "3ycqSUJmqIDsGHOdYwrB";
@@ -90,7 +91,6 @@ describe("User Controller", () => {
        expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
      });
    });
-
     describe("getAll", () => {
        it("should return all users with 200 status", async () => {
          const mock = [
@@ -123,15 +123,15 @@ describe("User Controller", () => {
          expect(mockRes.json).toHaveBeenCalledWith([]);
        });
      });
-
   describe("remove", () => {
      it("should delete user successfully", async () => {
        const userId = "123";
        mockReq.params = { id: userId };
        (userService.deleteUser as jest.Mock).mockResolvedValue(true);
  
-    await userController.remove(mockReq as Request, mockRes as Response, mockNext);
+   const user = await userController.remove(mockReq as Request, mockRes as Response, mockNext);
    
+ 
        expect(userService.deleteUser).toHaveBeenCalledWith(userId);
        expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
        expect(mockRes.json).toHaveBeenCalledWith({

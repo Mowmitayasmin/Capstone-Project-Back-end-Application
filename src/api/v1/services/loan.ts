@@ -1,3 +1,4 @@
+
 import { Loan } from "../models/loan";
 import {
     getItems,
@@ -20,7 +21,10 @@ export const getAllLoans = async (): Promise<Loan[]> => {
     });
 };
 
+
+
 export const createLoan = async (item: Partial<Loan>): Promise<Loan> => {
+    console.log('loan', item)
     const id: string = await createItems(COLLECTION, item);
     return { id, ...item } as Loan;
 };
@@ -30,6 +34,7 @@ export const getLoanById = async (id: string): Promise<Loan | null> => {
     return loan || null;
 };
 
+
 export const updateLoan = async (
     id: string,
     item: Partial<Loan>
@@ -37,6 +42,7 @@ export const updateLoan = async (
     await updateItems(COLLECTION, id, item);
     return { id, ...item } as Loan;
 };
+
 
 export const deleteLoan = async (id: string): Promise<void> => {
     await deleteItems(COLLECTION, id);

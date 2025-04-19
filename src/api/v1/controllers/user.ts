@@ -3,9 +3,14 @@ import { UserRecord } from 'firebase-admin/auth';
 import { auth } from "../../../../config/firebaseConfig";
 import { clientAuth } from '../../../../config/firebaseClient';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { HTTP_STATUS } from '../../../../constant/httpConstants';
+import { HTTP_STATUS } from '../../../constants/httpConstants';
 import * as userService from "../services/user";
 import { User } from '../models/user';
+
+
+
+
+
 
 export const getAll = async (
     req: Request,
@@ -22,6 +27,8 @@ export const getAll = async (
         next(error);
     }
 };
+
+
 
 export const create = async (
     req: Request,
@@ -46,7 +53,6 @@ export const create = async (
         next(error);
     }
 };
-
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { email, password } = req.body;
 
@@ -64,7 +70,6 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: "Failed to sign in" });
     }
 };
-
 export const userDetails = async (
     req: Request,
     res: Response,
@@ -100,7 +105,7 @@ export const update = async (
             req.body
         );
 
-        res.status(HTTP_STATUS.OK).json(
+        res.status(200).json(
             {
                 message: 'Updated successfully',
                 item: updated
@@ -111,6 +116,9 @@ export const update = async (
     }
 };
 
+
+
+
 export const remove = async (
     req: Request,
     res: Response,
@@ -118,8 +126,8 @@ export const remove = async (
 ): Promise<void> => {
     try {
         await userService.deleteUser(req.params.id);
-        res.status(HTTP_STATUS.OK).json({
-            message: 'User deleted successfully',
+        res.status(200).json({
+            message: 'Loan deleted successfully',
         });
     } catch (error) {
         next(error);

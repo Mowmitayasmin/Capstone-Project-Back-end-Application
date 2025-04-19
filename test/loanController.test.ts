@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as loanController from "../src/api/v1/controllers/loan";
 import * as loanService from "../src/api/v1/services/loan";
-import { HTTP_STATUS } from "../constant/httpConstants";
+import { HTTP_STATUS } from "../src/constants/httpConstants";
 
 jest.mock("../src/api/v1/services/loan.ts");
 

@@ -1,3 +1,4 @@
+
 import { User } from "../models/user";
 import {
     getItems,
@@ -19,10 +20,13 @@ export const getAllUsers = async (): Promise<User[]> => {
     });
 };
 
+
+
 export const createUser = async (item: Partial<User>): Promise<User> => {
     const id: string = await createItems(COLLECTION, item);
     return { id, ...item } as User;
 };
+
 
 export const updateUser = async (
     id: string,
@@ -32,6 +36,10 @@ export const updateUser = async (
     return { id, ...item } as User;
 };
 
-export const deleteUser = async (id: string): Promise<void> => {
+
+export const deleteUser = async (id: string) => {
     await deleteItems(COLLECTION, id);
+    return {
+        message: 'User deleted successfully'
+    }
 };

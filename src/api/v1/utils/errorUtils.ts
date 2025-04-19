@@ -1,5 +1,5 @@
-import { UNKNOWN_ERROR_CODE } from "../../../../constant/errorConstants";
-import { HTTP_STATUS } from "../../../../constant/httpConstants";
+import { UNKNOWN_ERROR_CODE } from "../../../constants/errorConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 export function isError(error: unknown): error is Error {
     return error instanceof Error;

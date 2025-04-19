@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { auth } from "../../../../config/firebaseConfig";
-import { HTTP_STATUS } from '../../../../constant/httpConstants';
+import { HTTP_STATUS } from '../../../constants/httpConstants';
 
  export const customClaims = async (req: Request, res: Response) => {
     const { uid } = req.params;

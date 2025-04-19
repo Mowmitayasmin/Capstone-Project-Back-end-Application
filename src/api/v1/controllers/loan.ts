@@ -2,7 +2,8 @@
 import { Request, Response, NextFunction } from "express";
 import * as loanService from "../services/loan";
 import type { Loan } from "../models/loan";
-import { HTTP_STATUS } from '../../../../constant/httpConstants';
+import { HTTP_STATUS } from '../../../constants/httpConstants';
+
 
 export const getAll = async (
     req: Request,
@@ -19,6 +20,8 @@ export const getAll = async (
         next(error);
     }
 };
+
+
 
 export const create = async (
     req: Request,
@@ -44,6 +47,7 @@ export const create = async (
         next(error);
     }
 };
+
 
 export const update = async (
     req: Request,
@@ -92,7 +96,6 @@ export const review = async (
         next(error);
     }
 };
-
 export const approve = async (
     req: Request,
     res: Response,
@@ -117,7 +120,6 @@ export const approve = async (
         next(error);
     }
 };
-
 export const loanDetails = async (
     req: Request,
     res: Response,
