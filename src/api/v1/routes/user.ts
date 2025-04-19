@@ -1,7 +1,16 @@
-import express, { Router } from 'express';
-import { getAll, create, login, userDetails, update, remove } from '../controllers/user';
-import { validateRequest } from '../middleware/validate';
-import { userSchema } from '../validation/user';
+import express, { Router } from "express";
+import {
+  getAll,
+  create,
+  login,
+  userDetails,
+  update,
+  remove,
+} from "../controllers/user";
+import { validateRequest } from "../middleware/validate";
+import { updateUserSchema, userSchema } from "../validation/user";
+import { isAuthenticate } from "../middleware/authenticate";
+import { isAuthorize } from "../middleware/authorize";
 
 const router: Router = express.Router();
 
@@ -32,7 +41,7 @@ const router: Router = express.Router();
  *                 user:
  *                   $ref: "#/components/schemas/User"
  */
-router.post('/create',validateRequest(userSchema), create);
+router.post("/create", validateRequest(userSchema), create);
 
 /**
  * @openapi
@@ -65,7 +74,7 @@ router.post('/create',validateRequest(userSchema), create);
  *                 user:
  *                   $ref: "#/components/schemas/User"
  */
-router.post('/login', login);
+router.post("/login", login);
 
 /**
  * @openapi
@@ -86,7 +95,14 @@ router.post('/login', login);
  *               items:
  *                 $ref: "#/components/schemas/User"
  */
-router.get('/', getAll);
+router.get(
+  "/",
+  isAuthenticate,
+  isAuthorize({
+    hasRole: ["manager", "officer"],
+  }),
+  getAll
+);
 
 /**
  * @openapi
@@ -111,7 +127,7 @@ router.get('/', getAll);
  *             schema:
  *               $ref: "#/components/schemas/User"
  */
-router.get('/:id', userDetails);
+router.get("/:id", userDetails);
 
 /**
  * @openapi
@@ -148,7 +164,15 @@ router.get('/:id', userDetails);
  *                 user:
  *                   $ref: "#/components/schemas/User"
  */
-router.put('/:id', update);
+router.put(
+  "/:id",
+  isAuthenticate,
+  isAuthorize({
+    hasRole: ["manager", "officer"],
+  }),
+  validateRequest(updateUserSchema),
+  update
+);
 
 /**
  * @openapi
@@ -177,6 +201,13 @@ router.put('/:id', update);
  *                   type: string
  *                   example: "User deleted successfully"
  */
-router.delete('/:id', remove);
+router.delete(
+  "/:id",
+  isAuthenticate,
+  isAuthorize({
+    hasRole: ["manager", "officer"],
+  }),
+  remove
+);
 
 export default router;

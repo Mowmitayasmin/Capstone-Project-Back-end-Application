@@ -1,45 +1,44 @@
 import { firestore } from "firebase-admin";
 
-
 export type MockFirestoreData = {
-    [key: string]: unknown;
+  [key: string]: unknown;
 };
 
 export type MockFirestoreCollection = {
-    doc: jest.Mock;
-    add: jest.Mock;
+  doc: jest.Mock;
+  add: jest.Mock;
 };
 
 export type MockFirestoreQuery = {
-    get: jest.Mock;
-    where: jest.Mock;
-    orderBy: jest.Mock;
-    limit: jest.Mock;
+  get: jest.Mock;
+  where: jest.Mock;
+  orderBy: jest.Mock;
+  limit: jest.Mock;
 };
 
 export type MockSnapshot = {
-    docs: FirestoreDocumentSnapshot[];
+  docs: FirestoreDocumentSnapshot[];
 };
 
 export type MockFirestoreDocumentSnapshot = {
-    data: () => MockFirestoreData;
-    id: string;
+  data: () => MockFirestoreData;
+  id: string;
 };
 
 export type MockQuerySnapshot = {
-    docs: MockFirestoreDocumentSnapshot[];
-    forEach: jest.Mock;
-    empty: boolean;
-    size: number;
+  docs: MockFirestoreDocumentSnapshot[];
+  forEach: jest.Mock;
+  empty: boolean;
+  size: number;
 };
 
 export type FirestoreDocumentSnapshot<T = unknown> = {
-    id: string;
-    data: () => T;
+  id: string;
+  data: () => T;
 };
 
 export type PartialMockFirestoreTransaction = Partial<{
-    [K in keyof firestore.Transaction]: jest.Mock;
+  [K in keyof firestore.Transaction]: jest.Mock;
 }>;
 
 /**
@@ -54,23 +53,23 @@ export type PartialMockFirestoreTransaction = Partial<{
  * const mockCollection = mockFirestoreCollection({ name: "John", age: 30 }, "user123");
  */
 export const mockFirestoreCollection = (
-    docData: MockFirestoreData,
-    id: string = "mockDocId"
+  docData: MockFirestoreData,
+  id: string = "mockDocId"
 ): MockFirestoreCollection => {
-    return {
-        doc: jest.fn().mockReturnValue({
-            set: jest.fn().mockResolvedValue(undefined),
-            get: jest.fn().mockResolvedValue({
-                id,
-                exists: true,
-                data: () => ({ ...docData }),
-            }),
-            update: jest.fn().mockResolvedValue(undefined),
-            delete: jest.fn().mockResolvedValue(undefined),
-            id,
-        }),
-        add: jest.fn().mockResolvedValue({ id }),
-    };
+  return {
+    doc: jest.fn().mockReturnValue({
+      set: jest.fn().mockResolvedValue(undefined),
+      get: jest.fn().mockResolvedValue({
+        id,
+        exists: true,
+        data: () => ({ ...docData }),
+      }),
+      update: jest.fn().mockResolvedValue(undefined),
+      delete: jest.fn().mockResolvedValue(undefined),
+      id,
+    }),
+    add: jest.fn().mockResolvedValue({ id }),
+  };
 };
 
 /**
@@ -82,12 +81,12 @@ export const mockFirestoreCollection = (
  * mockFirestoreTransaction.get.mockResolvedValue(someMockDocumentData);
  */
 export const mockFirestoreTransaction: jest.Mocked<firestore.Transaction> = {
-    get: jest.fn(),
-    getAll: jest.fn(),
-    create: jest.fn(),
-    set: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+  get: jest.fn(),
+  getAll: jest.fn(),
+  create: jest.fn(),
+  set: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
 };
 
 /**
@@ -104,22 +103,22 @@ export const mockFirestoreTransaction: jest.Mocked<firestore.Transaction> = {
  * ]);
  */
 export const mockQuerySnapshot = (
-    docs: MockFirestoreData[]
+  docs: MockFirestoreData[]
 ): MockQuerySnapshot => ({
-    docs: docs.map((doc) => ({
+  docs: docs.map((doc) => ({
+    data: (): MockFirestoreData => doc,
+    id: (doc.id as string) || "mockDocId",
+  })),
+  forEach: jest.fn((callback) =>
+    docs.forEach((doc) =>
+      callback({
         data: (): MockFirestoreData => doc,
         id: (doc.id as string) || "mockDocId",
-    })),
-    forEach: jest.fn((callback) =>
-        docs.forEach((doc) =>
-            callback({
-                data: (): MockFirestoreData => doc,
-                id: (doc.id as string) || "mockDocId",
-            })
-        )
-    ),
-    empty: docs.length === 0,
-    size: docs.length,
+      })
+    )
+  ),
+  empty: docs.length === 0,
+  size: docs.length,
 });
 
 /**
@@ -136,11 +135,10 @@ export const mockQuerySnapshot = (
  * ]);
  */
 export const mockFirestoreQuery = (
-    docs: MockFirestoreData[]
+  docs: MockFirestoreData[]
 ): MockFirestoreQuery => ({
-    get: jest.fn().mockResolvedValue(mockQuerySnapshot(docs)),
-    where: jest.fn().mockReturnThis(),
-    orderBy: jest.fn().mockReturnThis(),
-    limit: jest.fn().mockReturnThis(),
+  get: jest.fn().mockResolvedValue(mockQuerySnapshot(docs)),
+  where: jest.fn().mockReturnThis(),
+  orderBy: jest.fn().mockReturnThis(),
+  limit: jest.fn().mockReturnThis(),
 });
-

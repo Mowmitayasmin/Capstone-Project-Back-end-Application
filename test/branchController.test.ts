@@ -15,7 +15,7 @@ describe("Branch Controller", () => {
     mockReq = { body: {} };
     mockRes = {
       status: jest.fn().mockReturnThis(),
-      json: jest.fn()
+      json: jest.fn(),
     };
     mockNext = jest.fn();
   });
@@ -25,18 +25,20 @@ describe("Branch Controller", () => {
       // Test data
       const newBranchData = {
         name: "Main Branch",
-        address: "123 Main St, City, Country"
+        address: "123 Main St, City, Country",
       };
 
       const mockCreatedBranch = {
         id: "1",
         ...newBranchData,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock service
-      (branchService.createBranch as jest.Mock).mockResolvedValue(mockCreatedBranch);
+      (branchService.createBranch as jest.Mock).mockResolvedValue(
+        mockCreatedBranch
+      );
       mockReq.body = newBranchData;
 
       // Execute
@@ -50,8 +52,8 @@ describe("Branch Controller", () => {
       expect(branchService.createBranch).toHaveBeenCalledWith(newBranchData);
       expect(mockRes.status).toHaveBeenCalledWith(201);
       expect(mockRes.json).toHaveBeenCalledWith({
-        message: 'Branch created successfully',
-        branch: mockCreatedBranch
+        message: "Branch created successfully",
+        branch: mockCreatedBranch,
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
@@ -71,8 +73,6 @@ describe("Branch Controller", () => {
       expect(mockRes.status).not.toHaveBeenCalled();
       expect(mockRes.json).not.toHaveBeenCalled();
     });
-
-
   });
   describe("getAll", () => {
     let mockReq: Partial<Request>;
@@ -84,7 +84,7 @@ describe("Branch Controller", () => {
       mockReq = {};
       mockRes = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn()
+        json: jest.fn(),
       };
       mockNext = jest.fn();
     });
@@ -97,19 +97,21 @@ describe("Branch Controller", () => {
           name: "Main Branch",
           address: "123 Main St",
           created_at: new Date(),
-          updated_at: new Date()
+          updated_at: new Date(),
         },
         {
           id: "2",
           name: "Second Branch",
           address: "456 Oak Ave",
           created_at: new Date(),
-          updated_at: new Date()
-        }
+          updated_at: new Date(),
+        },
       ];
 
       // Mock service response
-      (branchService.getAllBranches as jest.Mock).mockResolvedValue(mockBranches);
+      (branchService.getAllBranches as jest.Mock).mockResolvedValue(
+        mockBranches
+      );
 
       // Call controller method
       await branchController.getAll(
@@ -152,7 +154,6 @@ describe("Branch Controller", () => {
       expect(mockRes.status).not.toHaveBeenCalled();
       expect(mockRes.json).not.toHaveBeenCalled();
     });
-
   });
   describe("branchDetails", () => {
     it("should return 400 if no ID is provided", async () => {
@@ -166,7 +167,7 @@ describe("Branch Controller", () => {
 
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.BAD_REQUEST);
       expect(mockRes.json).toHaveBeenCalledWith({
-        message: 'Branch id is required'
+        message: "Branch id is required",
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
@@ -174,7 +175,7 @@ describe("Branch Controller", () => {
     it("should return 404 if branch not found", async () => {
       const branchId = "1";
       mockReq.params = { id: branchId };
-      (branchService.getBranchById as jest.Mock).mockResolvedValue(null);
+      (branchService.getById as jest.Mock).mockResolvedValue(null);
 
       await branchController.branchDetails(
         mockReq as Request,
@@ -182,10 +183,10 @@ describe("Branch Controller", () => {
         mockNext
       );
 
-      expect(branchService.getBranchById).toHaveBeenCalledWith(Number(branchId));
+      expect(branchService.getById).toHaveBeenCalledWith(branchId);
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.NOT_FOUND);
       expect(mockRes.json).toHaveBeenCalledWith({
-        message: 'Branch not found'
+        message: "Branch not found",
       });
     });
 
@@ -194,10 +195,10 @@ describe("Branch Controller", () => {
       const mockBranch = {
         id: 1,
         name: "Main Branch",
-        address: "123 Main St"
+        address: "123 Main St",
       };
       mockReq.params = { id: branchId };
-      (branchService.getBranchById as jest.Mock).mockResolvedValue(mockBranch);
+      (branchService.getById as jest.Mock).mockResolvedValue(mockBranch);
 
       await branchController.branchDetails(
         mockReq as Request,
@@ -208,7 +209,7 @@ describe("Branch Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         success: true,
-        branch: mockBranch
+        branch: mockBranch,
       });
     });
 
@@ -216,7 +217,7 @@ describe("Branch Controller", () => {
       const branchId = "1";
       const mockError = new Error("Database error");
       mockReq.params = { id: branchId };
-      (branchService.getBranchById as jest.Mock).mockRejectedValue(mockError);
+      (branchService.getById as jest.Mock).mockRejectedValue(mockError);
 
       await branchController.branchDetails(
         mockReq as Request,
@@ -233,15 +234,17 @@ describe("Branch Controller", () => {
       const branchId = "1";
       const updateData = {
         name: "Updated Branch",
-        address: "456 New St"
+        address: "456 New St",
       };
       const updatedBranch = {
         id: 1,
-        ...updateData
+        ...updateData,
       };
       mockReq.params = { id: branchId };
       mockReq.body = updateData;
-      (branchService.updateBranch as jest.Mock).mockResolvedValue(updatedBranch);
+      (branchService.updateBranch as jest.Mock).mockResolvedValue(
+        updatedBranch
+      );
 
       await branchController.update(
         mockReq as Request,
@@ -255,8 +258,8 @@ describe("Branch Controller", () => {
       );
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
-        message: 'Branch Updated successfully',
-        branch: updatedBranch
+        message: "Branch Updated successfully",
+        branch: updatedBranch,
       });
     });
 
@@ -292,7 +295,7 @@ describe("Branch Controller", () => {
       expect(branchService.deleteBranch).toHaveBeenCalledWith(branchId);
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
-        message: 'Branch deleted successfully'
+        message: "Branch deleted successfully",
       });
     });
 

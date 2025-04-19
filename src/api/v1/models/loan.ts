@@ -7,7 +7,7 @@
  *       properties:
  *         id:
  *           type: number
- *         name: 
+ *         name:
  *           type: string
  *         price:
  *           type: number
@@ -31,12 +31,14 @@
  *         - is_approved
  */
 export type Loan = {
-    id: string,
-    name: string;
-    description: string;
-    price?: number;
-    created_at: Date;
-    updated_at: Date;
-    is_reviewed: Boolean;
-    is_approved: Boolean
+  id: string;
+  name: string;
+  description: string;
+  price?: number;
+  created_at: Date;
+  updated_at: Date;
+  is_reviewed: Boolean;
+  is_approved: Boolean;
+  user_id: string;
+  branch_id?: string;
 };
