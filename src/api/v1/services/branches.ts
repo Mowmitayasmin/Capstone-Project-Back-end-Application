@@ -34,7 +34,7 @@ export const getAllBranches = async (): Promise<Branch[]> => {
  */
 
 export const createBranch = async (item: Partial<Branch>): Promise<Branch> => {
-  const id = await createItems(COLLECTION, item);
+  const id: string = await createItems(COLLECTION, item);
   return { id, ...item } as Branch;
 };
 
