@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { ObjectSchema } from "joi";
+
 import { MiddlewareFunction, RequestData } from "../types/expressTypes";
-import { HTTP_STATUS } from "../../../../constant/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 /**
  * Validates data against a Joi schema and throws an error if validation fails.
@@ -24,17 +25,15 @@ import { HTTP_STATUS } from "../../../../constant/httpConstants";
  * }
  */
 export const validate = <T>(schema: ObjectSchema<T>, data: T): void => {
-    // abortEarly: false ensures all validation errors are collected, not just the first one
-    const { error } = schema.validate(data, { abortEarly: false });
+  // abortEarly: false ensures all validation errors are collected, not just the first one
+  const { error } = schema.validate(data, { abortEarly: false });
 
-    if (error) {
-        // Map through all validation errors and join them into a single string
-        throw new Error(
-            `Validation error: ${error.details
-                .map((x) => x.message)
-                .join(", ")}`
-        );
-    }
+  if (error) {
+    // Map through all validation errors and join them into a single string
+    throw new Error(
+      `Validation error: ${error.details.map((x) => x.message).join(", ")}`
+    );
+  }
 };
 
 /**
@@ -60,27 +59,27 @@ export const validate = <T>(schema: ObjectSchema<T>, data: T): void => {
  * });
  */
 export const validateRequest = (schema: ObjectSchema): MiddlewareFunction => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        try {
-            // Combine all possible sources of request data into a single object
-            // This allows validation of data from body, URL params, and query params together
-            const data: RequestData = {
-                ...req.body, // POST/PUT request data
-                ...req.params, // URL parameters (e.g., /users/:id)
-                ...req.query, // Query string parameters (e.g., ?filter=active)
-            };
+  return (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Combine all possible sources of request data into a single object
+      // This allows validation of data from body, URL params, and query params together
+      const data: RequestData = {
+        ...req.body, // POST/PUT request data
+        ...req.params, // URL parameters (e.g., /users/:id)
+        ...req.query, // Query string parameters (e.g., ?filter=active)
+      };
 
-            // Validate the combined data against the schema
-            validate(schema, data);
+      // Validate the combined data against the schema
+      validate(schema, data);
 
-            // If validation passes, proceed to the next middleware/route handler
-            next();
-        } catch (error) {
-            // If validation fails, return a 400 Bad Request response
-            // Type assertion is needed because catch blocks receive an unknown type
-            res.status(HTTP_STATUS.BAD_REQUEST).json({
-                error: (error as Error).message,
-            });
-        }
-    };
+      // If validation passes, proceed to the next middleware/route handler
+      next();
+    } catch (error) {
+      // If validation fails, return a 400 Bad Request response
+      // Type assertion is needed because catch blocks receive an unknown type
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        error: (error as Error).message,
+      });
+    }
+  };
 };

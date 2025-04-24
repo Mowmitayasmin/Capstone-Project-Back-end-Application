@@ -1,5 +1,7 @@
-import express, { Router } from 'express';
-import { customClaims } from '../controllers/admin';
+import express, { Router } from "express";
+import { customClaims } from "../controllers/admin";
+import { isAuthenticate } from "../middleware/authenticate";
+import { isAuthorize } from "../middleware/authorize";
 
 const router: Router = express.Router();
 
@@ -47,6 +49,13 @@ const router: Router = express.Router();
  *       404:
  *         description: User not found
  */
-router.post('/set-custom-claims', customClaims);
+router.post(
+  "/set-custom-claims",
+  isAuthenticate,
+  isAuthorize({
+    hasRole: ["admin"],
+  }),
+  customClaims
+);
 
 export default router;
